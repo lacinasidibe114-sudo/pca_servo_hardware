@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pca_servo_robot">
+  
+  <!-- 1. On inclut ton fichier ros2_control existant -->
+  <xacro:include filename="pca_servo_control.xacro" />
+
+  <!-- 2. Définition de la base du robot -->
+  <link name="base_link"/>
+
+  <!-- 3. Création des 6 joints (avec des liens simples pour la visualisation) -->
+  <!-- Joint 1 -->
+  <joint name="joint1" type="revolute">
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="1.0" velocity="1.0"/>
+  </joint>
+  <link name="link1">
+    <visual>
+      <geometry><cylinder radius="0.02" length="0.1"/></geometry>
+      <material name="red"><color rgba="1 0 0 1"/></material>
+    </visual>
+  </link>
+
+  <!-- Joint 2 -->
+  <joint name="joint2" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="1.0"/>
+  </joint>
+  <link name="link2">
+    <visual>
+      <geometry><cylinder radius="0.02" length="0.1"/></geometry>
+      <material name="green"><color rgba="0 1 0 1"/></material>
+    </visual>
+  </link>
+
+  <!-- Joint 3 -->
+  <joint name="joint3" type="revolute">
+    <parent link="link2"/>
+    <child link="link3"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="1.0"/>
+  </joint>
+  <link name="link3">
+    <visual>
+      <geometry><cylinder radius="0.02" length="0.1"/></geometry>
+      <material name="blue"><color rgba="0 0 1 1"/></material>
+    </visual>
+  </link>
+
+  <!-- Joint 4 -->
+  <joint name="joint4" type="revolute">
+    <parent link="link3"/>
+    <child link="link4"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="1.0" velocity="1.0"/>
+  </joint>
+  <link name="link4">
+    <visual>
+      <geometry><cylinder radius="0.015" length="0.05"/></geometry>
+      <material name="yellow"><color rgba="1 1 0 1"/></material>
+    </visual>
+  </link>
+
+  <!-- Joint 5 -->
+  <joint name="joint5" type="revolute">
+    <parent link="link4"/>
+    <child link="link5"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="1.0" velocity="1.0"/>
+  </joint>
+  <link name="link5">
+    <visual>
+      <geometry><cylinder radius="0.015" length="0.05"/></geometry>
+      <material name="cyan"><color rgba="0 1 1 1"/></material>
+    </visual>
+  </link>
+
+  <!-- Joint 6 -->
+  <joint name="joint6" type="revolute">
+    <parent link="link5"/>
+    <child link="link6"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="1.0" velocity="1.0"/>
+  </joint>
+  <link name="link6">
+    <visual>
+      <geometry><cylinder radius="0.01" length="0.02"/></geometry>
+      <material name="black"><color rgba="0 0 0 1"/></material>
+    </visual>
+  </link>
+
+</robot>

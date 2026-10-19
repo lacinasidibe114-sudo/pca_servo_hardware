@@ -1,0 +1,7 @@
+<library path="pca_servo_hardware">
+  <class name="pca_servo_hardware/PCAServoInterface"
+         type="pca_servo_hardware::PCAServoInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>Hardware interface générique pour servomoteurs via PCA9685.</description>
+  </class>
+</library>
