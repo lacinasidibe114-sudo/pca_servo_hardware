@@ -1,9 +1,3 @@
-C'est une excellente idée. La calibration des impulsions (microsecondes) est **la clé pour ne pas griller ses servos** et pour pouvoir mélanger différents modèles sur le même PCA9685. 
-
-Voici le `README.md` complet et mis à jour. J'y ai intégré une section dédiée très détaillée sur l'ajustement des limites (calibration), avec les explications techniques tirées de nos discussions.
-
-Tu peux copier-coller ce contenu directement dans ton dépôt GitHub `pca_servo_hardware`.
-
 ```markdown
 # PCA9685 Servo Hardware Interface (ROS 2)
 
