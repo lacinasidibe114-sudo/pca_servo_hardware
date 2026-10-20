@@ -3,10 +3,19 @@
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
-// Paramètres de calibration (à ajuster pour tes servos Hitec)
-const int SERVO_MIN = 150; // Impulsion pour 0°
-const int SERVO_MAX = 600; // Impulsion pour 180°
-const int NB_MAX_SERVOS = 16; // Le PCA9685 gère jusqu'à 16 servos
+const int NB_MAX_SERVOS = 16; 
+
+// =========================================================================
+// CALIBRATION PAR CANAL (En microsecondes)
+// Valeurs par défaut : 600 µs (0°) à 2400 µs (180°)
+// Ajuste ces tableaux selon le servo branché sur chaque canal !
+// =========================================================================
+int US_MIN[16] = {600, 600, 600, 600,  600,  600,  600,  600,  600,  600,  600,  600,  600,  600,  600,  600};
+int US_MAX[16] = {2400, 2400, 2400, 2400, 2400, 2400, 2400, 2400, 2400, 2400, 2400, 2400, 2400, 2400, 2400, 2400};
+
+// Si tu as un servo 270° (ex: DS3225), tu peux augmenter son US_MAX.
+// Exemple pour le canal 3 :
+// US_MAX[3] = 2700; 
 
 int last_positions[NB_MAX_SERVOS]; 
 
@@ -15,10 +24,11 @@ void setup() {
   pwm.begin();
   pwm.setPWMFreq(50); // Fréquence standard 50Hz
   
-  // Initialisation du tableau des dernières positions
   for (int i = 0; i < NB_MAX_SERVOS; i++) {
     last_positions[i] = -1;
-    pwm.setPWM(i, 0, map(90, 0, 180, SERVO_MIN, SERVO_MAX)); // Centrer au démarrage
+    // Centrage initial à 90°
+    int center_us = (US_MIN[i] + US_MAX[i]) / 2;
+    pwm.writeMicroseconds(i, center_us); 
   }
 }
 
@@ -42,12 +52,19 @@ void loop() {
           float angle = token.substring(colon_idx + 1).toFloat();
           
           if (pin >= 0 && pin < NB_MAX_SERVOS) {
+            // Sécurité : on limite l'angle entre 0 et 180
             angle = constrain(angle, 0.0, 180.0);
             
             // Anti-jitter
             if (abs(angle - last_positions[pin]) > 0.1) {
-              int pulse = map((int)angle, 0, 180, SERVO_MIN, SERVO_MAX);
-              pwm.setPWM(pin, 0, pulse);
+              
+              // CONVERSION ANGLE -> MICROSECONDES (selon le canal)
+              // map() convertit 0-180 en US_MIN[pin] - US_MAX[pin]
+              long pulse_us = map((long)angle, 0, 180, US_MIN[pin], US_MAX[pin]);
+              
+              // Envoi de l'impulsion précise au PCA9685
+              pwm.writeMicroseconds(pin, pulse_us);
+              
               last_positions[pin] = (int)angle;
             }
           }
